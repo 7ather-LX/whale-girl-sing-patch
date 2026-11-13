@@ -1,0 +1,33 @@
+name: release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build release ZIP
+        run: |
+          set -e
+          mkdir -p dist
+          git archive --format=zip --prefix=whale-girl-sing-patch/ \
+            -o "dist/whale-girl-sing-patch-${GITHUB_REF_NAME}.zip" HEAD
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ github.ref_name }} · 鲸鲸唱歌补丁
+          body_path: docs/release-notes-${{ github.ref_name }}.md
+          files: dist/*.zip
+          draft: false
+          prerelease: false

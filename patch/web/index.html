@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>鲸鲸唱歌补丁</title>
+  <link rel="stylesheet" href="/sing-patch/style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <div class="logo">唱</div>
+      <div>
+        <h1>鲸鲸唱歌补丁</h1>
+        <p>在微信里说「唱首歌」，她就会用 Breeze Blue 的声音唱一段，带伴奏</p>
+      </div>
+    </div>
+    <div class="top-actions">
+      <span id="pill" class="pill">连接中…</span>
+      <button id="save" class="primary">保存设置</button>
+    </div>
+  </header>
+
+  <main class="grid">
+    <section class="card span2">
+      <div class="row">
+        <div>
+          <h2>总开关</h2>
+          <p class="muted">关掉后不再响应唱歌指令；语音发送仍由基础软件的「语音发送」控制。</p>
+        </div>
+        <label class="check"><input id="enabled" type="checkbox"> 启用唱歌</label>
+      </div>
+      <div id="diag" class="hint">正在读取基础软件状态…</div>
+    </section>
+
+    <section class="card">
+      <h2>在哪里生效</h2>
+      <div class="row tight">
+        <label class="check"><input id="groups" type="checkbox"> 全部群聊</label>
+        <label class="check"><input id="privates" type="checkbox"> 全部私聊</label>
+      </div>
+      <div class="chat-tools">
+        <button data-tab="group" class="tab active" id="tabGroup">群聊</button>
+        <button data-tab="private" class="tab" id="tabPrivate">私聊</button>
+        <input id="chatSearch" placeholder="搜索聊天…">
+      </div>
+      <div id="chatList" class="chat-list"><p class="muted">加载中…</p></div>
+    </section>
+
+    <section class="card">
+      <h2>歌单与频率</h2>
+      <label class="field">歌曲
+        <select id="song"></select>
+      </label>
+      <label class="field">同一聊天冷却（秒）
+        <input id="cooldown" type="number" min="0" max="3600" step="10">
+      </label>
+      <label class="field">每小时最多唱几首
+        <input id="maxPerHour" type="number" min="1" max="100" step="1">
+      </label>
+      <p class="muted small">默认 120 秒 / 6 首。生成第一首需要几十秒，之后走缓存。</p>
+    </section>
+
+    <section class="card span2">
+      <div class="row">
+        <div>
+          <h2>试听</h2>
+          <p class="muted">只生成并试听，不会发到微信。</p>
+        </div>
+        <button id="testBtn" class="primary">生成 / 试听</button>
+      </div>
+      <div id="previewWrap" class="preview-wrap hidden">
+        <audio id="preview" controls preload="metadata"></audio>
+        <div id="previewMeta" class="muted small"></div>
+      </div>
+    </section>
+
+    <section class="card span2">
+      <h2>怎么用</h2>
+      <p class="muted">在已勾选的聊天里发：</p>
+      <pre class="cmd">@鲸鲸 唱首歌
+@鲸鲸 来首小星星
+@鲸鲸 唱歌</pre>
+      <p class="muted small">前提：启动器「语音发送」已开启，并且选中了虚拟声卡；唱歌补丁安装后会修改桥接的语音判定，让「唱」触发语音发送。</p>
+    </section>
+  </main>
+
+  <div id="toast" class="toast"></div>
+  <script src="/sing-patch/app.js"></script>
+</body>
+</html>
